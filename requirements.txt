@@ -1,0 +1,7 @@
+fpdf2
+qrcode
+pillow==11.3.0
+lxml
+pyzmq
+dotenv
+
