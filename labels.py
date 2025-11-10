@@ -28,6 +28,10 @@ def finish_label(pdf, printer):
     # TODO tmpfile
     pdf.output("output.pdf")
 
+    if printer is None:
+        print("No printer set in .env, skip printing")
+        return
+
     print("Printing label:")
     command = "lp -d " + printer + " output.pdf"
     print(command)
