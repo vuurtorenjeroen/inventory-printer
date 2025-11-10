@@ -8,6 +8,9 @@ def start_label(labelx, labely, orientation='portrait'):
     pdf = FPDF(orientation, format=(labelx, labely))
     pdf.set_margin(0)
     pdf.add_font(family="Segou UI", fname="segoeui.ttf")
+    pdf.add_font(family="Segou UI", fname="segoeuib.ttf", style="B")
+    pdf.add_font(family="Segou UI", fname="segoeuii.ttf", style="I")
+    pdf.set_font('Segou UI')
 
     pdf.add_page()
 
@@ -36,14 +39,13 @@ def finish_label(pdf, printer):
     print(result.stderr)
 
 
-# Item
+# Item (Dymo 30332 / S0929120)
 def item(data):
     labelx = 25
     labely = 25
     pdf = start_label(labelx, labely)
-    pdf.set_font('Segou UI', size=6)
+    pdf.set_font(size=6)
 
-    # code = "INV-ABCDEFGHIJKL"
     code = data["id"]
     img = qrcode.make(code, border=0)
     qrsize = 17
