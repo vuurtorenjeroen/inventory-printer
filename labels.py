@@ -43,8 +43,12 @@ def finish_label(pdf, printer):
     print(result.stderr)
 
 
-# Item (Dymo 30332 / S0929120)
-def item(data):
+def item_default(data):
+    item_qrcode(data)
+
+
+# Item QR (Dymo 30332 / S0929120)
+def item_qrcode(data):
     labelx = 25
     labely = 25
     pdf = start_label(labelx, labely)

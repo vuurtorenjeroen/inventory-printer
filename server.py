@@ -24,10 +24,8 @@ def main():
             try:
                 names = []
                 type = data["type"]
-                if "category" in data:
-                    category = data["category"]["name"]
-                    names.append((type+"_"+category).lower())
-                names.append(type.lower())
+                variant = data["variant"]
+                names.append((type+"_"+variant).lower())
                 print(names)
                 for method_name in names:
                     print(dir(labels))
