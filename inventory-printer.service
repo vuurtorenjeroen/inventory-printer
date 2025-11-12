@@ -1,0 +1,13 @@
+[Unit]
+Description=Inventory printer
+After=network.target
+
+[Service]
+Type=idle
+Restart=on-failure
+User=user
+WorkingDirectory=/home/user/inventory-printer
+ExecStart=/home/user/inventory-printer/.venv/bin/python -u server.py
+
+[Install]
+WantedBy=multi-user.target
