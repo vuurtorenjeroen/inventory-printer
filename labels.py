@@ -107,3 +107,26 @@ def location_portrait(data):
 
     printer = get_printer(labelx, labely)
     finish_label(pdf, printer)
+
+
+# Location narrowlandscape (Dymo 99010 / S0722370)
+def location_narrowlandscape(data):
+    labelx = 28
+    labely = 89
+    pdf = start_label(labelx, labely, orientation='landscape')
+
+    qrsize = 22
+
+    pdf.set_xy(32, 5)
+    pdf.set_font(size=30)
+    pdf.cell(text=f"**{data['name']}**", markdown=True, align="L")
+
+    pdf.set_xy(32, 17)
+    pdf.set_font(size=20)
+    pdf.cell(text=data['id'], markdown=True, align="L")
+
+    img = qrcode.make(data["id"], border=0)
+    pdf.image(img.get_image(), x=7, y=((labelx-qrsize)/2), w=qrsize)
+
+    printer = get_printer(labelx, labely)
+    finish_label(pdf, printer)
