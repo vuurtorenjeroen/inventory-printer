@@ -119,7 +119,7 @@ def item_fastener(data):
         pdf.image(img.get_image(), x=((labelx-qrsize)/2), y=2.5, w=qrsize)
 
         pdf.set_y(19)
-        pdf.set_font(size=5)
+        pdf.set_font(size=4.5)
         pdf.cell(text=code, center=True, align="C")
 
     pdf.set_line_width(0.3)
