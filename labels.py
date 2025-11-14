@@ -6,6 +6,7 @@ import os
 
 def start_label(labelx, labely, orientation='portrait'):
     pdf = FPDF(orientation, format=(labelx, labely))
+    pdf.set_auto_page_break(False)
     pdf.set_margin(0)
     pdf.add_font(family="Segou UI", fname="segoeui.ttf")
     pdf.add_font(family="Segou UI", fname="segoeuib.ttf", style="B")
@@ -61,6 +62,43 @@ def item_qrcode(data):
 
     pdf.set_y(qrsize+2.5+1)
     pdf.cell(text=code, center=True, align="C")
+
+    printer = get_printer(labelx, labely)
+    finish_label(pdf, printer)
+
+
+# Item name (Dymo 11355 / S0722550)
+def item_itemname(data):
+    labelx = 19
+    labely = 51
+    pdf = start_label(labelx, labely, orientation='landscape')
+
+    pdf.set_xy(5, 2)
+    pdf.set_font(size=12)
+    pdf.multi_cell(0, text=f"{data['name']}", markdown=True, align="L")
+
+    printer = get_printer(labelx, labely)
+    finish_label(pdf, printer)
+
+
+# Item detailed (Dymo 99010 / S0722370)
+def item_detailed(data):
+    labelx = 28
+    labely = 89
+    pdf = start_label(labelx, labely, orientation='landscape')
+
+    qrsize = 22
+
+    pdf.set_xy(32, 5)
+    pdf.set_font(size=12)
+    pdf.multi_cell(0, text=f"**{data['name']}**", markdown=True, align="L")
+
+    pdf.set_xy(32, 20)
+    pdf.set_font(size=12)
+    pdf.cell(text=data['id'], markdown=True, align="L")
+
+    img = qrcode.make(data["id"], border=0)
+    pdf.image(img.get_image(), x=7, y=((labelx-qrsize)/2), w=qrsize)
 
     printer = get_printer(labelx, labely)
     finish_label(pdf, printer)
