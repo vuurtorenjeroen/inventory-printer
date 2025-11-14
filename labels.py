@@ -104,6 +104,56 @@ def item_detailed(data):
     finish_label(pdf, printer)
 
 
+# Item fastener (Dymo 11355 / S0722550)
+def item_fastener(data):
+    labelx = 19
+    labely = 51
+    pdf = start_label(labelx, labely)
+    pdf.set_font(size=6)
+
+    code = data["id"]
+    img = qrcode.make(code, border=0)
+    qrsize = 15
+    with pdf.rotation(180, x=labelx/2, y=14):
+
+        pdf.image(img.get_image(), x=((labelx-qrsize)/2), y=2.5, w=qrsize)
+
+        pdf.set_y(19)
+        pdf.set_font(size=5)
+        pdf.cell(text=code, center=True, align="C")
+
+    pdf.set_line_width(0.3)
+    pdf.line(x1=2, y1=28, x2=labelx-2, y2=28)
+
+    if "size" in data["attributes"]:
+        pdf.set_y(30)
+        text = data["attributes"]["size"]
+        pdf.set_font(size=16-((len(text)-5)*2) if len(text) > 5 else 16)
+        pdf.cell(text=text, center=True, align="C")
+
+    if "toolsize" in data["attributes"]:
+        pdf.set_y(37)
+        pdf.set_font(size=8)
+        pdf.cell(text=data["attributes"]["toolsize"], center=True, align="C")
+
+    if "type" in data["attributes"]:
+        type = data["attributes"]
+    elif "category" in data:
+        type = data["category"]["name"]
+    if len(type) > 0:
+        pdf.set_y(41)
+        pdf.set_font(size=8)
+        pdf.cell(text=type, center=True, align="C")
+
+    if "isodin" in data["attributes"]:
+        pdf.set_y(45)
+        pdf.set_font(size=8)
+        pdf.cell(text=data["attributes"]["isodin"], center=True, align="C")
+
+    printer = get_printer(labelx, labely)
+    finish_label(pdf, printer)
+
+
 # Location default
 def location_default(data):
     location_portrait(data)
