@@ -137,7 +137,7 @@ def item_fastener(data):
         pdf.cell(text=data["attributes"]["toolsize"], center=True, align="C")
 
     if "type" in data["attributes"]:
-        type = data["attributes"]
+        type = data["attributes"]["type"]
     elif "category" in data:
         type = data["category"]["name"]
     if len(type) > 0:
