@@ -136,6 +136,7 @@ def item_fastener(data):
         pdf.set_font(size=8)
         pdf.cell(text=data["attributes"]["toolsize"], center=True, align="C")
 
+    type = ""
     if "type" in data["attributes"]:
         type = data["attributes"]["type"]
     elif "category" in data:
