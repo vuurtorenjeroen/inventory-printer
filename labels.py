@@ -165,34 +165,35 @@ def location_qrcode(data):
     item_qrcode(data)
 
 
-# Location portrait (Dymo 99014 / S0722430)
+# Location portrait (Dymo 11356 / S0722560)
 def location_portrait(data):
-    labelx = 54
-    labely = 101
+    labelx = 41
+    labely = 89
     pdf = start_label(labelx, labely)
 
-    qrsize = 33
+    qrsize = 28
+    img = qrcode.make(data["id"], border=0)
+    pdf.image(img.get_image(), x=((labelx-qrsize)/2), y=7, w=qrsize)
 
-    pdf.set_y(14)
+    pdf.set_y(37)
+    pdf.set_font(size=10)
+    pdf.cell(text=f"**{data['id']}**", markdown=True, center=True, align="C")
+
+    x = (labelx - qrsize - 1) / 2
+    pdf.set_line_width(0.4)
+    pdf.line(x1=x, y1=43, x2=labelx-x, y2=43)
+
+    pdf.set_y(45)
     pdf.set_font(size=68)
     pdf.cell(text=f"**{data['name']}**", markdown=True, center=True, align="C")
 
     x = (labelx - qrsize - 1) / 2
-    pdf.set_line_width(0.4)
-    pdf.line(x1=x, y1=41, x2=labelx-x, y2=41)
-
-    pdf.set_y(45)
-    pdf.set_font(size=12)
-    pdf.cell(text=f"**{data['contents']}**", markdown=True, center=True, align="C")
-    pdf.set_y(51)
-    pdf.cell(text=f"**{data['id']}**", markdown=True, center=True, align="C")
-
-    x = (labelx - qrsize - 1) / 2
     pdf.set_line_width(0.3)
-    pdf.line(x1=x, y1=59, x2=labelx-x, y2=59)
+    pdf.line(x1=x, y1=68, x2=labelx-x, y2=68)
 
-    img = qrcode.make(data["id"], border=0)
-    pdf.image(img.get_image(), x=((labelx-qrsize)/2), y=61, w=qrsize)
+    pdf.set_y(71)
+    pdf.set_font(size=12)
+    pdf.multi_cell(labelx-2, text=f"{data['contents']}", markdown=True, center=True, align="C")
 
     printer = get_printer(labelx, labely)
     finish_label(pdf, printer)
