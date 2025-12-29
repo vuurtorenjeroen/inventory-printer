@@ -44,6 +44,13 @@ def finish_label(pdf, printer):
     print(result.stderr)
 
 
+def fix_font_size(pdf, max_width: int, size: int, text: str, markdown: bool= False):
+    pdf.set_font(size=size)
+    while(pdf.get_string_width(s=text, markdown=markdown) > max_width):
+        size = size - 1
+        pdf.set_font(size=size)
+
+
 def item_default(data):
     item_qrcode(data)
 
@@ -128,8 +135,8 @@ def item_fastener(data):
     if "size" in data["attributes"]:
         pdf.set_y(30)
         text = data["attributes"]["size"]
-        pdf.set_font(size=16-((len(text)-5)*2) if len(text) > 5 else 16)
-        pdf.cell(text=text, center=True, align="C")
+        fix_font_size(pdf, labelx-2, 16, text=text)
+        pdf.cell(text=text, center=True, align="C", h=5.6)
 
     if "toolsize" in data["attributes"]:
         pdf.set_y(37)
@@ -184,8 +191,8 @@ def location_portrait(data):
     pdf.line(x1=x, y1=43, x2=labelx-x, y2=43)
 
     pdf.set_y(45)
-    pdf.set_font(size=68)
-    pdf.cell(text=f"**{data['name']}**", markdown=True, center=True, align="C")
+    fix_font_size(pdf, labelx-2, 68, text=f"**{data['name']}**", markdown=True)
+    pdf.cell(text=f"**{data['name']}**", markdown=True, center=True, align="C", h=24)
 
     x = (labelx - qrsize - 1) / 2
     pdf.set_line_width(0.3)
