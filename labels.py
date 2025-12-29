@@ -43,6 +43,22 @@ def finish_label(pdf, printer):
     print(result.stdout)
     print(result.stderr)
 
+def fit_text(pdf, text, startsize):
+    size = startsize
+    maxwidth = getattr(pdf, "epw", pdf.w - pdf.l_margin - pdf.r_margin)
+    cell_ratio = getattr(pdf, "cell_height_ratio", 1.0)
+    reserved_h = (startsize / pdf.k) * cell_ratio
+
+    while size > 10:
+        pdf.set_font(size=size)
+        width = pdf.get_string_width(text, markdown=True)
+        if (width <= maxwidth):
+            break
+
+        size = size - 1
+
+    pdf.cell(h=reserved_h, text=text, markdown=True, center=True, align="C")
+
 
 def item_default(data):
     item_qrcode(data)
@@ -184,8 +200,7 @@ def location_portrait(data):
     pdf.line(x1=x, y1=43, x2=labelx-x, y2=43)
 
     pdf.set_y(45)
-    pdf.set_font(size=68)
-    pdf.cell(text=f"**{data['name']}**", markdown=True, center=True, align="C")
+    fit_text(pdf, text=f"**{data['name']}**", startsize = 68)
 
     x = (labelx - qrsize - 1) / 2
     pdf.set_line_width(0.3)
