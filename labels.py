@@ -88,6 +88,29 @@ def item_itemname(data):
     finish_label(pdf, printer)
 
 
+# Item detailed (Dymo 11355 / S0722550)
+def item_detailed_small(data):
+    labelx = 19
+    labely = 51
+    pdf = start_label(labelx, labely, orientation='landscape')
+
+    qrsize = 15
+
+    pdf.set_xy(22, 2)
+    pdf.set_font(size=12)
+    pdf.multi_cell(labely-20, text=f"{data['name']}", markdown=True, align="L")
+
+    pdf.set_xy(22, 15)
+    pdf.set_font(size=8)
+    pdf.cell(text=data['id'], markdown=True, align="L")
+
+    img = qrcode.make(data["id"], border=0)
+    pdf.image(img.get_image(), x=6, y=((labelx-qrsize)/2), w=qrsize)
+
+    printer = get_printer(labelx, labely)
+    finish_label(pdf, printer)
+
+
 # Item detailed (Dymo 99010 / S0722370)
 def item_detailed(data):
     labelx = 28
@@ -201,6 +224,32 @@ def location_portrait(data):
     pdf.set_y(71)
     pdf.set_font(size=12)
     pdf.multi_cell(labelx-2, text=f"{data['contents']}", markdown=True, center=True, align="C")
+
+    printer = get_printer(labelx, labely)
+    finish_label(pdf, printer)
+
+
+# Location landscape (Dymo 11356 / S0722560)
+def location_landscape(data):
+    labelx = 41
+    labely = 89
+    pdf = start_label(labelx, labely, orientation="landscape")
+
+    qrsize = 28
+    img = qrcode.make(data["id"], border=0)
+    pdf.image(img.get_image(), x=6, y=4, w=qrsize)
+
+    pdf.set_xy(6, 34)
+    pdf.set_font(size=10)
+    pdf.cell(text=f"**{data['id']}**", markdown=True, align="C", w=qrsize)
+
+    pdf.set_xy(36, 3)
+    fix_font_size(pdf, labely-38, 68, text=f"**{data['name']}**", markdown=True)
+    pdf.cell(text=f"**{data['name']}**", markdown=True, align="L", h=24)
+
+    pdf.set_xy(36, 25)
+    pdf.set_font(size=12)
+    pdf.multi_cell(labely-38, text=f"{data['contents']}", markdown=True, align="L")
 
     printer = get_printer(labelx, labely)
     finish_label(pdf, printer)
