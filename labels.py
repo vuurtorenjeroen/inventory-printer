@@ -98,7 +98,7 @@ def item_detailed_small(data):
 
     pdf.set_xy(22, 2)
     pdf.set_font(size=12)
-    pdf.multi_cell(labely-20, text=f"{data['name']}", markdown=True, align="L")
+    pdf.multi_cell(labely-22, text=f"{data['name']}", markdown=True, align="L")
 
     pdf.set_xy(22, 15)
     pdf.set_font(size=8)
